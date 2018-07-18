@@ -8,7 +8,7 @@ public without sharing class CampaignInfluenceGateway
 	// return Even Distribution Model ID
 	public static String findEvenModelId()
 	{
-			return [SELECT ID FROM CampaignInfluenceModel WHERE DeveloperName = 'b2bmaEvenDistributionModel' LIMIT 1].Id;
+			return [SELECT ID FROM CampaignInfluenceModel WHERE DeveloperName = 'primaryModel' LIMIT 1].Id;
 	}
 
 	// return Adaptive Distribution Model ID

@@ -64,7 +64,8 @@ public with sharing class CampaignInfluenceHandler implements ITrigger
 	public void afterInsert(SObject so)
 	{
     CampaignInfluence ci = (CampaignInfluence)so;
-    if(ci.ModelId != EvenModelID || ci.Campaign.Multiplier__c == NULL) return;
+    if((String)ci.ModelId != EvenModelID) return;
+    if(ci.Campaign.Multiplier__c == null) return;
 
     totalOfMultipliers = oppsWithMultipliers.get(ci.OpportunityId);
 

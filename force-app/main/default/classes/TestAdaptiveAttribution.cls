@@ -29,7 +29,7 @@ public class TestAdaptiveAttribution {
                                     Multiplier__c=2);
       insert camp;
 
-      String modelId = [SELECT ID FROM CampaignInfluenceModel WHERE DeveloperName = 'b2bmaEvenDistributionModel' LIMIT 1].Id;
+      String modelId = [SELECT ID FROM CampaignInfluenceModel WHERE DeveloperName = 'primaryModel' LIMIT 1].Id;
 
       Test.startTest();
       CampaignInfluence newCI = new CampaignInfluence(
@@ -39,6 +39,7 @@ public class TestAdaptiveAttribution {
           ContactId = con.Id,
           CampaignId = camp.Id
         );
+      insert newCI;
       Test.stopTest();
 
       CampaignInfluence result = [SELECT ModelId FROM CampaignInfluence WHERE OpportunityId = :opp.Id][0];
