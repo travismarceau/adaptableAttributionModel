@@ -22,13 +22,10 @@ public without sharing class CampaignInfluenceGateway
 	{
 		Map<String,List<CampaignInfluence>> oppCampInfMap = new Map<String,List<CampaignInfluence>>();
 
-		for(Opportunity opp : [SELECT Id, (SELECT id FROM CampaignInfluence LIMIT 1) FROM Opportunity]) {
+		for(Opportunity[] opps : [SELECT Id, (SELECT id FROM CampaignInfluences LIMIT 1) FROM Opportunity]) {
 			for(Opportunity opp : opps) {
-				if(opp.CampaignInfluence.size() > 0) {
-					List<CampaignInfluence> cis = [SELECT Id, Campaign.Multiplier__c, CampaignId, Opportunity.Amount, OpportunityId, Influence
-																					FROM CampaignInfluence
-																					WHERE OpportunityId = :opp.Id
-																					AND ModelId = :AdaptiveModelId];
+				if(opp.CampaignInfluences.size() > 0) {
+					List<CampaignInfluence> cis = [SELECT Id, Campaign.Multiplier__c, CampaignId, Opportunity.Amount, OpportunityId, Influence FROM CampaignInfluence WHERE OpportunityId = :opp.Id AND ModelId = :AdaptiveModelId];
 					oppCampInfMap.put(opp.Id,cis);
 				}
 			}
@@ -41,14 +38,10 @@ public without sharing class CampaignInfluenceGateway
 	public static Map<String,double> findTotalOppMultipliers(String EvenModelId)
 	{
 		Map<String,double> oppsWithMultipliers = new Map<String,double>();
-		AggregateResult[] totalOppMultipliers =
-      [SELECT OpporutunityId, SUM(Campaign.Multiplier__c)sumOf
-        FROM CampaignInfluence
-        ModelId = :EvenModelId
-        GROUP BY OpportunityId];
+		AggregateResult[] totalOppMultipliers = [SELECT OpportunityId, SUM(Campaign.Multiplier__c)sumOf FROM CampaignInfluence WHERE ModelId = :EvenModelId GROUP BY OpportunityId];
 
 		for(AggregateResult ar : totalOppMultipliers) {
-			oppsWithMultipliers.put(ar.get('OpportunityId'),ar.get('sumOf'));
+			oppsWithMultipliers.put((String)ar.get('OpportunityId'),(double)ar.get('sumOf'));
 		}
     return oppsWithMultipliers;
 	}

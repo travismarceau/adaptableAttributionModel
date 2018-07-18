@@ -19,12 +19,13 @@ public class TestAdaptiveAttribution {
                                        Amount=300000);
       insert opp;
 
-      Contact con = new Contact(Name='Test Contact',
+      Contact con = new Contact(FirstName='Test',
+                                LastName='Contact',
                                 AccountId=acct.Id);
-      insert opp;
+      insert con;
 
       Campaign camp = new Campaign(Name='Test Campaign',
-                                    Active=TRUE,
+                                    isActive=TRUE,
                                     Multiplier__c=2);
       insert camp;
 
@@ -40,9 +41,7 @@ public class TestAdaptiveAttribution {
         );
       Test.stopTest();
 
-      CampaignInfluence result = [SELECT modelId
-                                  FROM CampaignInfluence
-                                  WHERE OpportunityId = opp.Id];
+      CampaignInfluence result = [SELECT ModelId FROM CampaignInfluence WHERE OpportunityId = :opp.Id][0];
 
       System.assertEquals(modelId, result.modelId, 'CI failed to insert');
     }

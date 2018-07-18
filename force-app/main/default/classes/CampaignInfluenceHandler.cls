@@ -40,7 +40,7 @@ public with sharing class CampaignInfluenceHandler implements ITrigger
       AdaptiveModelId = CampaignInfluenceGateway.findAdaptiveModelId();
 
       // fetch total sum of multipliers across all campaigns for related Opp
-      oppsWithMultipliers = CampaignInfluenceGateway.findTotalOfMultipliers(EvenModelId);
+      oppsWithMultipliers = CampaignInfluenceGateway.findTotalOppMultipliers(EvenModelId);
       campMultipliers = CampaignInfluenceGateway.findCampaignMultipliers(AdaptiveModelId);
     }
 	}
